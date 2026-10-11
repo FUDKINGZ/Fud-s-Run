@@ -76,12 +76,7 @@
     }
     .menu-btn.play:hover, .menu-btn.play:active { background: #0f0; color: #000; }
     .menu-btn.danger { border-color: #f00; color: #f00; }
-    .menu-btn:disabled {
-      opacity: 0.4;
-      pointer-events: none;
-      border-color: #555;
-      color: #555;
-    }
+    .menu-btn:disabled { opacity: 0.4; pointer-events: none; border-color: #555; color: #555; }
 
     .profile-box {
       background: #111;
@@ -118,16 +113,11 @@
       padding: 3px 0;
     }
     .rank { color: #ff0; width: 32px; }
-
     .footer { margin-top: auto; font-size: 8px; color: #444; padding: 6px; }
 
-    /* ===== GAME SCREEN ===== */
-    #game-screen {
-      padding: 0;
-      justify-content: flex-start;
-    }
+    #game-screen { padding: 0; justify-content: flex-start; }
     #game-ui {
-      height: 46px;
+      height: 44px;
       background: #0a0a0a;
       border-bottom: 2px solid #333;
       display: flex;
@@ -137,56 +127,24 @@
       font-size: 9px;
       flex-shrink: 0;
       gap: 6px;
+      z-index: 2;
     }
-    .ui-group {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      white-space: nowrap;
-    }
+    .ui-group { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
     .ui-label { color: #888; }
     .ui-value { color: #ffcc00; }
     .ui-value.money { color: #0f0; }
     .ui-value.items { color: #ff66aa; }
-    #risk-container {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    #risk-bar {
-      width: 72px;
-      height: 10px;
-      background: #222;
-      border: 1px solid #555;
-      position: relative;
-    }
-    #risk-fill {
-      height: 100%;
-      width: 0%;
-      background: #0f0;
-      transition: width 0.25s, background 0.25s;
-    }
-    #alert-text {
-      color: #ff0000;
-      font-size: 9px;
-      text-shadow: 0 0 6px #ff0000;
-      opacity: 0;
-      transition: opacity 0.12s;
-      min-width: 42px;
-    }
-    #alert-text.active {
-      opacity: 1;
-      animation: alertFlash 0.3s ease-in-out infinite alternate;
-    }
-    @keyframes alertFlash {
-      from { opacity: 1; }
-      to   { opacity: 0.3; }
-    }
+    #risk-container { display: flex; align-items: center; gap: 5px; }
+    #risk-bar { width: 68px; height: 10px; background: #222; border: 1px solid #555; }
+    #risk-fill { height: 100%; width: 0%; background: #0f0; transition: width 0.25s, background 0.25s; }
+    #alert-text { color: #ff0000; font-size: 9px; text-shadow: 0 0 6px #ff0000; opacity: 0; min-width: 42px; }
+    #alert-text.active { opacity: 1; animation: alertFlash 0.3s ease-in-out infinite alternate; }
+    @keyframes alertFlash { from { opacity: 1; } to { opacity: 0.3; } }
 
     #canvas-wrapper {
       flex: 0 1 auto;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       width: 100%;
       background: #000;
@@ -207,9 +165,9 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.94);
+      background: rgba(0,0,0,0.95);
       border: 3px solid #ffcc00;
-      padding: 16px 20px;
+      padding: 14px 18px;
       font-size: 12px;
       text-align: center;
       z-index: 30;
@@ -227,10 +185,12 @@
       font-size: 11px;
       cursor: pointer;
     }
+    #mugshot-canvas { display: block; margin: 6px auto 4px; image-rendering: pixelated; border: 2px solid #444; background: #111; }
+    #booked-text { color: #f00; font-size: 11px; margin: 4px 0 8px; text-shadow: 0 0 6px #f00; }
 
     #dpad {
       flex-shrink: 0;
-      height: 132px;
+      height: 128px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -238,15 +198,10 @@
       border-top: 2px solid #333;
       padding-bottom: env(safe-area-inset-bottom);
     }
-    #dpad-inner {
-      position: relative;
-      width: 128px;
-      height: 128px;
-    }
+    #dpad-inner { position: relative; width: 120px; height: 120px; }
     .dpad-btn {
       position: absolute;
-      width: 44px;
-      height: 44px;
+      width: 42px; height: 42px;
       background: #1a1a1a;
       border: none;
       border-radius: 6px;
@@ -257,27 +212,23 @@
       touch-action: none;
       -webkit-tap-highlight-color: transparent;
       color: #ccc;
-      font-size: 22px;
+      font-size: 20px;
       line-height: 1;
     }
-    .dpad-btn:active, .dpad-btn.pressed {
-      background: #ffcc00;
-      color: #000;
-      box-shadow: 0 0 10px #ff0;
-    }
-    #btn-up    { top: 0;    left: 42px; }
-    #btn-down  { bottom: 0; left: 42px; }
-    #btn-left  { top: 42px; left: 0; }
-    #btn-right { top: 42px; right: 0; }
+    .dpad-btn:active, .dpad-btn.pressed { background: #ffcc00; color: #000; box-shadow: 0 0 10px #ff0; }
+    #btn-up    { top: 0;    left: 39px; }
+    #btn-down  { bottom: 0; left: 39px; }
+    #btn-left  { top: 39px; left: 0; }
+    #btn-right { top: 39px; right: 0; }
 
     @media (max-width: 500px) {
-      #game-ui { height: 42px; font-size: 8px; gap: 4px; }
-      #risk-bar { width: 60px; }
-      #dpad { height: 120px; }
-      #dpad-inner { width: 118px; height: 118px; }
-      .dpad-btn { width: 40px; height: 40px; font-size: 20px; }
-      #btn-up, #btn-down { left: 39px; }
-      #btn-left, #btn-right { top: 39px; }
+      #game-ui { height: 40px; font-size: 8px; }
+      #risk-bar { width: 56px; }
+      #dpad { height: 116px; }
+      #dpad-inner { width: 110px; height: 110px; }
+      .dpad-btn { width: 38px; height: 38px; font-size: 18px; }
+      #btn-up, #btn-down { left: 36px; }
+      #btn-left, #btn-right { top: 36px; }
     }
   </style>
 </head>
@@ -293,7 +244,7 @@
 
     <div id="profiles" class="screen">
       <div class="profile-box">
-        <h3>CURRENT PROFILE</h3>
+        <h3>CRIMINAL HISTORY</h3>
         <div id="current-profile-display" class="stats">Loading...</div>
       </div>
       <div class="profile-box">
@@ -316,18 +267,9 @@
 
     <div id="game-screen" class="screen">
       <div id="game-ui">
-        <div class="ui-group">
-          <span class="ui-label">LVL</span>
-          <span class="ui-value" id="ui-level">1</span>
-        </div>
-        <div class="ui-group">
-          <span class="ui-value money">$</span>
-          <span class="ui-value money" id="ui-value">0</span>
-        </div>
-        <div class="ui-group">
-          <span class="ui-label">ITEMS</span>
-          <span class="ui-value items" id="ui-items">0</span>
-        </div>
+        <div class="ui-group"><span class="ui-label">LVL</span> <span class="ui-value" id="ui-level">1</span></div>
+        <div class="ui-group"><span class="ui-value money">$</span><span class="ui-value money" id="ui-value">0</span></div>
+        <div class="ui-group"><span class="ui-label">ITEMS</span> <span class="ui-value items" id="ui-items">0</span></div>
         <div id="risk-container" class="ui-group">
           <span class="ui-label">RISK</span>
           <div id="risk-bar"><div id="risk-fill"></div></div>
@@ -335,7 +277,7 @@
         </div>
       </div>
       <div id="canvas-wrapper">
-        <canvas id="canvas" width="608" height="416"></canvas>
+        <canvas id="canvas" width="456" height="288"></canvas>
       </div>
       <div id="dpad">
         <div id="dpad-inner">
@@ -346,6 +288,8 @@
         </div>
       </div>
       <div id="message-box">
+        <canvas id="mugshot-canvas" width="96" height="120" style="display:none;"></canvas>
+        <div id="booked-text" style="display:none;">RECENTLY BOOKED</div>
         <div id="message-text"></div>
         <button onclick="hideMessage()">OK</button>
       </div>
@@ -366,7 +310,7 @@
   <script>
     const DEFAULT_PROFILE = {
       name: "PLAYER", totalValue: 0, itemsStolen: 0,
-      levelsUnlocked: 1, bestRunValue: 0, lastPlayed: null
+      levelsUnlocked: 1, bestRunValue: 0, lastPlayed: null, arrests: 0
     };
     let currentProfile = {...DEFAULT_PROFILE};
     let highScores = JSON.parse(localStorage.getItem('fudHighScores')) || [
@@ -391,6 +335,7 @@
         <div>NAME: <span>${currentProfile.name}</span></div>
         <div>TOTAL VALUE: <span>$${currentProfile.totalValue}</span></div>
         <div>ITEMS STOLEN: <span>${currentProfile.itemsStolen}</span></div>
+        <div>ARRESTS: <span>${currentProfile.arrests || 0}</span></div>
         <div>LEVELS UNLOCKED: <span>${currentProfile.levelsUnlocked}</span></div>
         <div>BEST RUN: <span>$${currentProfile.bestRunValue}</span></div>
         <div>LAST PLAYED: <span>${currentProfile.lastPlayed || 'NEVER'}</span></div>`;
@@ -411,9 +356,7 @@
       }
       updateProfileDisplay();
       document.getElementById('save-btn').disabled = true;
-      if (document.getElementById('profiles').classList.contains('active')) {
-        showMessage(`PROFILE "${name}" SAVED!`);
-      }
+      if (document.getElementById('profiles').classList.contains('active')) showMessage(`PROFILE "${name}" SAVED!`);
     }
     function loadProfile() {
       const name = document.getElementById('profile-name').value.trim().toUpperCase();
@@ -421,6 +364,7 @@
       const saved = localStorage.getItem('fudProfile_'+name);
       if (saved) {
         currentProfile = JSON.parse(saved);
+        if (!currentProfile.arrests) currentProfile.arrests = 0;
         localStorage.setItem('fudCurrentProfile', name);
         updateProfileDisplay();
         document.getElementById('save-btn').disabled = true;
@@ -440,12 +384,17 @@
       const last = localStorage.getItem('fudCurrentProfile');
       if (last) {
         const s = localStorage.getItem('fudProfile_'+last);
-        if (s) currentProfile = JSON.parse(s);
+        if (s) {
+          currentProfile = JSON.parse(s);
+          if (!currentProfile.arrests) currentProfile.arrests = 0;
+        }
       }
       updateProfileDisplay();
       drawTitleFud();
     }
-    function showMessage(text, callback) {
+    function showMessage(text, callback, showMugshot = false) {
+      document.getElementById('mugshot-canvas').style.display = showMugshot ? 'block' : 'none';
+      document.getElementById('booked-text').style.display = showMugshot ? 'block' : 'none';
       document.getElementById('message-text').innerHTML = text;
       document.getElementById('message-box').style.display = 'block';
       window._msgCallback = callback || null;
@@ -465,10 +414,38 @@
       ctx.fillStyle = '#1a3a8a'; ctx.fillRect(32, 74, 14, 16); ctx.fillRect(54, 74, 14, 16);
     }
 
-    // ===== GAME =====
+    function drawMugshot() {
+      const mc = document.getElementById('mugshot-canvas');
+      const mctx = mc.getContext('2d');
+      mctx.clearRect(0,0,96,120);
+      mctx.fillStyle = '#1a1a1a';
+      mctx.fillRect(0,0,96,120);
+      mctx.strokeStyle = '#444';
+      mctx.lineWidth = 1;
+      for (let i = 20; i < 110; i += 12) {
+        mctx.beginPath(); mctx.moveTo(4, i); mctx.lineTo(92, i); mctx.stroke();
+      }
+      mctx.fillStyle = '#ffcc99';
+      mctx.fillRect(28, 28, 40, 36);
+      mctx.fillStyle = '#cc0000';
+      mctx.fillRect(24, 18, 48, 14);
+      mctx.fillRect(34, 8, 28, 12);
+      mctx.fillStyle = '#000';
+      mctx.fillRect(34, 36, 7, 6);
+      mctx.fillRect(55, 36, 7, 6);
+      mctx.fillStyle = '#ffcc00';
+      mctx.fillRect(26, 64, 44, 28);
+      mctx.fillStyle = '#1a3a8a';
+      mctx.fillRect(28, 92, 16, 18);
+      mctx.fillRect(52, 92, 16, 18);
+      mctx.fillStyle = '#ffcc99';
+      mctx.fillRect(18, 68, 8, 14);
+      mctx.fillRect(70, 68, 8, 14);
+    }
+
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    const TILE = 32;
+    const TILE = 24;
 
     const MAZES = [
       [
@@ -484,7 +461,7 @@
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        
       ],
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -499,7 +476,7 @@
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        
       ],
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -514,7 +491,7 @@
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        
       ],
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -529,7 +506,7 @@
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        
       ],
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -544,15 +521,16 @@
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        
       ]
     ];
 
     const ITEMS_LIST = [
-      {name:"Drinks", value:3},
-      {name:"Bread", value:4},
-      {name:"Candy", value:2},
-      {name:"Milk", value:5},
+      {name:"Drinks", value:3, cheap:true},
+      {name:"Bread", value:4, cheap:true},
+      {name:"Candy", value:2, cheap:true},
+      {name:"Milk", value:5, cheap:true},
+      {name:"Magazine", value:6, cheap:true},
       {name:"Dog Food", value:12},
       {name:"Toys", value:15},
       {name:"Headphones", value:40},
@@ -562,7 +540,7 @@
 
     let currentLevel = 0;
     let maze = MAZES[0];
-    let fud = { x: 304, y: 336, speed: 2.1 };
+    let fud = { x: 0, y: 0, speed: 1.8 };
     let guards = [];
     let items = [];
     let inventory = [];
@@ -579,21 +557,23 @@
     function loadLevel(lvl) {
       currentLevel = lvl;
       maze = MAZES[lvl];
-      fud = { x: 9 * TILE + 16, y: 10 * TILE + 16, speed: 2.1 };
+      fud = { x: 9 * TILE + TILE/2, y: 10 * TILE + TILE/2, speed: 1.8 };
       totalValue = 0;
       inventory = [];
       items = [];
       guards = [
-        { x: 3*TILE+16, y: 3*TILE+16, mode: 'roam', timer: 0 },
-        { x: 15*TILE+16, y: 5*TILE+16, mode: 'roam', timer: 0 },
-        { x: 9*TILE+16, y: 7*TILE+16, mode: 'roam', timer: 0 }
+        { x: 3*TILE+TILE/2, y: 3*TILE+TILE/2, mode: 'roam', timer: 0 },
+        { x: 15*TILE+TILE/2, y: 5*TILE+TILE/2, mode: 'roam', timer: 0 },
+        { x: 9*TILE+TILE/2, y: 7*TILE+TILE/2, mode: 'roam', timer: 0 }
       ];
 
       for (let y = 1; y < 11; y++) {
         for (let x = 1; x < 18; x++) {
-          if (maze[y][x] === 0 && Math.random() < 0.14) {
-            const it = ITEMS_LIST[Math.floor(Math.random() * ITEMS_LIST.length)];
-            items.push({ x: x*TILE + 16, y: y*TILE + 16, ...it });
+          if (maze[y][x] === 0 && Math.random() < 0.16) {
+            const depth = y / 11;
+            const pool = depth > 0.55 ? ITEMS_LIST.filter(i => i.cheap) : ITEMS_LIST;
+            const it = pool[Math.floor(Math.random() * pool.length)];
+            items.push({ x: x*TILE + TILE/2, y: y*TILE + TILE/2, ...it });
           }
         }
       }
@@ -618,23 +598,22 @@
       const alertEl = document.getElementById('alert-text');
       alertEl.textContent = 'ALERT!';
       alertEl.classList.add('active');
-      setTimeout(() => {
-        alertEl.classList.remove('active');
-        alertEl.textContent = '';
-      }, 2500);
+      setTimeout(() => { alertEl.classList.remove('active'); alertEl.textContent = ''; }, 2500);
     }
 
     function canMove(px, py) {
-      const pts = [[px-8,py-10],[px+8,py-10],[px-8,py+10],[px+8,py+10]];
+      const pts = [[px-6,py-8],[px+6,py-8],[px-6,py+8],[px+6,py+8]];
       for (let [x,y] of pts) {
         const tx = Math.floor(x/TILE), ty = Math.floor(y/TILE);
-        if (tx<0 || tx>=19 || ty<0 || ty>=13 || maze[ty][tx]===1) return false;
+        if (tx<0 || tx>=19 || ty<0 || ty>=12 || maze[ty][tx]===1) return false;
       }
       return true;
     }
 
+    // Original line-of-sight rule: same row OR same column
     function isOnSameAisle(g, p) {
-      return Math.floor(g.x/TILE) === Math.floor(p.x/TILE) || Math.floor(g.y/TILE) === Math.floor(p.y/TILE);
+      return Math.floor(g.x / TILE) === Math.floor(p.x / TILE) ||
+             Math.floor(g.y / TILE) === Math.floor(p.y / TILE);
     }
 
     function gameLoop() {
@@ -654,11 +633,15 @@
       if (dx && canMove(fud.x+dx, fud.y)) fud.x += dx;
       if (dy && canMove(fud.x, fud.y+dy)) fud.y += dy;
 
+      // ORIGINAL SECURITY RULE:
+      // Guards only become alerted if they are on the same row or column
+      // at the exact moment Fud picks up an item.
       items = items.filter(it => {
-        if (Math.hypot(it.x-fud.x, it.y-fud.y) < 14) {
+        if (Math.hypot(it.x - fud.x, it.y - fud.y) < 11) {
           inventory.push(it);
           totalValue += it.value;
           updateUI();
+
           let alertTriggered = false;
           guards.forEach(g => {
             if (g.mode === 'roam' && isOnSameAisle(g, fud)) {
@@ -667,6 +650,7 @@
             }
           });
           if (alertTriggered) triggerAlert();
+
           return false;
         }
         return true;
@@ -682,84 +666,91 @@
       guards.forEach(g => {
         g.timer++;
         if (g.mode === 'roam') {
-          if (g.timer > 45) {
+          if (g.timer > 40) {
             g.timer = 0;
             const d = [[1,0],[-1,0],[0,1],[0,-1]][Math.floor(Math.random()*4)];
-            const nx = g.x + d[0]*7, ny = g.y + d[1]*7;
-            if (canMove(nx,ny)) { g.x=nx; g.y=ny; }
+            const nx = g.x + d[0]*6, ny = g.y + d[1]*6;
+            if (canMove(nx,ny)) { g.x = nx; g.y = ny; }
           }
         } else {
-          if (g.timer > 10) {
+          // chase mode – only entered if they saw the theft
+          if (g.timer > 8) {
             g.timer = 0;
-            let nx=g.x, ny=g.y;
-            if (fud.x > g.x+6) nx += 2.2;
-            else if (fud.x < g.x-6) nx -= 2.2;
-            if (fud.y > g.y+6) ny += 2.2;
-            else if (fud.y < g.y-6) ny -= 2.2;
-            if (canMove(nx,g.y)) g.x = nx;
-            if (canMove(g.x,ny)) g.y = ny;
+            let nx = g.x, ny = g.y;
+            if (fud.x > g.x + 5) nx += 1.8;
+            else if (fud.x < g.x - 5) nx -= 1.8;
+            if (fud.y > g.y + 5) ny += 1.8;
+            else if (fud.y < g.y - 5) ny -= 1.8;
+            if (canMove(nx, g.y)) g.x = nx;
+            if (canMove(g.x, ny)) g.y = ny;
           }
-          if (Math.hypot(g.x-fud.x, g.y-fud.y) < 18) loseLevel();
+          if (Math.hypot(g.x - fud.x, g.y - fud.y) < 13) loseLevel();
         }
       });
     }
 
     function drawHuman(x, y, isPlayer) {
+      const s = TILE / 32;
       ctx.fillStyle = isPlayer ? '#ffcc00' : '#2255cc';
-      ctx.fillRect(x-7, y-3, 14, 11);
+      ctx.fillRect(x-6*s, y-2*s, 12*s, 9*s);
       ctx.fillStyle = '#ffcc99';
-      ctx.fillRect(x-6, y-13, 12, 11);
+      ctx.fillRect(x-5*s, y-11*s, 10*s, 10*s);
       if (isPlayer) {
         ctx.fillStyle = '#cc0000';
-        ctx.fillRect(x-8, y-17, 16, 5);
-        ctx.fillRect(x-4, y-21, 8, 5);
+        ctx.fillRect(x-7*s, y-15*s, 14*s, 5*s);
+        ctx.fillRect(x-3*s, y-18*s, 6*s, 4*s);
       } else {
         ctx.fillStyle = '#111';
-        ctx.fillRect(x-8, y-16, 16, 5);
+        ctx.fillRect(x-7*s, y-14*s, 14*s, 4*s);
       }
       ctx.fillStyle = '#000';
-      ctx.fillRect(x-3, y-9, 3, 3);
-      ctx.fillRect(x+1, y-9, 3, 3);
+      ctx.fillRect(x-3*s, y-8*s, 2*s, 3*s);
+      ctx.fillRect(x+1*s, y-8*s, 2*s, 3*s);
       ctx.fillStyle = isPlayer ? '#1a3a8a' : '#111';
-      ctx.fillRect(x-6, y+8, 4, 6);
-      ctx.fillRect(x+2, y+8, 4, 6);
+      ctx.fillRect(x-5*s, y+7*s, 3*s, 5*s);
+      ctx.fillRect(x+2*s, y+7*s, 3*s, 5*s);
       ctx.fillStyle = '#ffcc99';
-      ctx.fillRect(x-11, y-1, 4, 6);
-      ctx.fillRect(x+7, y-1, 4, 6);
+      ctx.fillRect(x-9*s, y, 3*s, 5*s);
+      ctx.fillRect(x+6*s, y, 3*s, 5*s);
     }
 
     function drawItem(it) {
       const x = it.x, y = it.y;
       if (it.name === "Drinks") {
-        ctx.fillStyle = '#0099ff'; ctx.fillRect(x-7, y-11, 14, 20);
-        ctx.fillStyle = '#66ccff'; ctx.fillRect(x-5, y-9, 10, 4);
-        ctx.fillStyle = '#ff3333'; ctx.beginPath(); ctx.arc(x, y+2, 5, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#0099ff'; ctx.fillRect(x-6, y-10, 12, 18);
+        ctx.fillStyle = '#66ccff'; ctx.fillRect(x-4, y-8, 8, 4);
+        ctx.fillStyle = '#ff3333'; ctx.beginPath(); ctx.arc(x, y+1, 4, 0, Math.PI*2); ctx.fill();
       } else if (it.name === "Bread") {
-        ctx.fillStyle = '#e8b86d'; ctx.beginPath(); ctx.ellipse(x, y, 12, 8, 0, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = '#c9924a'; ctx.fillRect(x-9, y-2, 18, 3);
+        ctx.fillStyle = '#e8b86d'; ctx.beginPath(); ctx.ellipse(x, y, 10, 7, 0, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#c9924a'; ctx.fillRect(x-8, y-1, 16, 2);
       } else if (it.name === "Candy") {
-        ctx.fillStyle = '#ff66aa'; ctx.fillRect(x-10, y-6, 20, 12);
-        ctx.fillStyle = '#ffffff'; ctx.fillRect(x-3, y-6, 6, 12);
+        ctx.fillStyle = '#ff66aa'; ctx.fillRect(x-9, y-5, 18, 10);
+        ctx.fillStyle = '#fff'; ctx.fillRect(x-2, y-5, 4, 10);
       } else if (it.name === "Milk") {
-        ctx.fillStyle = '#f5f5f5'; ctx.fillRect(x-8, y-12, 16, 22);
-        ctx.fillStyle = '#4488ff'; ctx.fillRect(x-6, y-10, 12, 6);
+        ctx.fillStyle = '#f5f5f5'; ctx.fillRect(x-7, y-11, 14, 20);
+        ctx.fillStyle = '#4488ff'; ctx.fillRect(x-5, y-9, 10, 5);
+      } else if (it.name === "Magazine") {
+        ctx.fillStyle = '#ffdd44'; ctx.fillRect(x-9, y-8, 18, 16);
+        ctx.fillStyle = '#cc0000'; ctx.fillRect(x-7, y-6, 14, 4);
+        ctx.fillStyle = '#000'; ctx.font = '6px Press Start 2P'; ctx.fillText('MAG', x-7, y+4);
       } else if (it.name === "Dog Food") {
-        ctx.fillStyle = '#b87333'; ctx.fillRect(x-9, y-11, 18, 20);
-        ctx.fillStyle = '#d4a017'; ctx.fillRect(x-7, y-9, 14, 5);
-        ctx.fillStyle = '#fff'; ctx.font = '7px Press Start 2P'; ctx.fillText('DOG', x-8, y+3);
+        ctx.fillStyle = '#b87333'; ctx.fillRect(x-8, y-10, 16, 18);
+        ctx.fillStyle = '#d4a017'; ctx.fillRect(x-6, y-8, 12, 4);
+        ctx.fillStyle = '#fff'; ctx.font = '6px Press Start 2P'; ctx.fillText('DOG', x-7, y+2);
       } else if (it.name === "Toys") {
-        ctx.fillStyle = '#ff9900'; ctx.beginPath(); ctx.arc(x, y-3, 9, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = '#ff7700'; ctx.fillRect(x-7, y+4, 5, 8); ctx.fillRect(x+2, y+4, 5, 8);
+        ctx.fillStyle = '#ff9900'; ctx.beginPath(); ctx.arc(x, y-2, 8, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#ff7700'; ctx.fillRect(x-6, y+4, 4, 7); ctx.fillRect(x+2, y+4, 4, 7);
       } else if (it.name === "Headphones") {
-        ctx.strokeStyle = '#555'; ctx.lineWidth = 4;
-        ctx.beginPath(); ctx.arc(x, y, 11, Math.PI*1.1, Math.PI*1.9); ctx.stroke();
-        ctx.fillStyle = '#333'; ctx.fillRect(x-14, y-5, 6, 12); ctx.fillRect(x+8, y-5, 6, 12);
+        ctx.strokeStyle = '#555'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.arc(x, y, 10, Math.PI*1.1, Math.PI*1.9); ctx.stroke();
+        ctx.fillStyle = '#333'; ctx.fillRect(x-13, y-4, 5, 10); ctx.fillRect(x+8, y-4, 5, 10);
       } else if (it.name === "Jewelry") {
         ctx.fillStyle = '#ffd700';
-        ctx.beginPath(); ctx.moveTo(x, y-11); ctx.lineTo(x+9, y-1); ctx.lineTo(x+5, y+9); ctx.lineTo(x-5, y+9); ctx.lineTo(x-9, y-1); ctx.closePath(); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(x, y-10); ctx.lineTo(x+8, y); ctx.lineTo(x+4, y+8); ctx.lineTo(x-4, y+8); ctx.lineTo(x-8, y); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x, y-2, 2, 0, Math.PI*2); ctx.fill();
       } else if (it.name === "Cigarettes") {
-        ctx.fillStyle = '#cc3333'; ctx.fillRect(x-8, y-11, 16, 20);
-        ctx.fillStyle = '#ffffff'; ctx.fillRect(x-6, y-9, 12, 5);
+        ctx.fillStyle = '#cc3333'; ctx.fillRect(x-7, y-10, 14, 18);
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(x-5, y-8, 10, 4);
       }
     }
 
@@ -767,23 +758,23 @@
       ctx.fillStyle = '#000';
       ctx.fillRect(0,0,canvas.width,canvas.height);
 
-      for (let y=0; y<13; y++) {
+      for (let y=0; y<12; y++) {
         for (let x=0; x<19; x++) {
           if (maze[y][x] === 1) {
             ctx.fillStyle = '#0055aa';
             ctx.fillRect(x*TILE, y*TILE, TILE-1, TILE-1);
           } else if (maze[y][x] === 2) {
             ctx.fillStyle = '#00cc00';
-            ctx.fillRect(x*TILE+2, y*TILE+2, TILE-4, TILE-4);
-            ctx.fillStyle = '#000';
-            ctx.font = '7px Press Start 2P';
-            ctx.fillText('EXIT', x*TILE+2, y*TILE+20);
-          } else if (maze[y][x] === 3) {
-            ctx.fillStyle = '#00aaff';
-            ctx.fillRect(x*TILE+2, y*TILE+2, TILE-4, TILE-4);
+            ctx.fillRect(x*TILE+1, y*TILE+1, TILE-2, TILE-2);
             ctx.fillStyle = '#000';
             ctx.font = '6px Press Start 2P';
-            ctx.fillText('IN', x*TILE+6, y*TILE+20);
+            ctx.fillText('OUT', x*TILE+1, y*TILE+16);
+          } else if (maze[y][x] === 3) {
+            ctx.fillStyle = '#00aaff';
+            ctx.fillRect(x*TILE+1, y*TILE+1, TILE-2, TILE-2);
+            ctx.fillStyle = '#000';
+            ctx.font = '6px Press Start 2P';
+            ctx.fillText('IN', x*TILE+4, y*TILE+16);
           }
         }
       }
@@ -812,7 +803,11 @@
 
     function loseLevel() {
       gameRunning = false;
-      showMessage(`CAUGHT BY SECURITY!<br>YOU GO TO JAIL`, () => showScreen('profiles'));
+      currentProfile.arrests = (currentProfile.arrests || 0) + 1;
+      currentProfile.lastPlayed = new Date().toLocaleDateString();
+      localStorage.setItem('fudProfile_'+currentProfile.name, JSON.stringify(currentProfile));
+      drawMugshot();
+      showMessage(`CAUGHT BY SECURITY!<br>YOU GO TO JAIL`, () => showScreen('profiles'), true);
     }
 
     window.addEventListener('keydown', e => {
@@ -832,7 +827,6 @@
       btn.addEventListener('mouseup', end);
       btn.addEventListener('mouseleave', end);
     }
-
     bindDpad('btn-up', 'ArrowUp');
     bindDpad('btn-down', 'ArrowDown');
     bindDpad('btn-left', 'ArrowLeft');
