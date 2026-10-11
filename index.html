@@ -24,9 +24,8 @@
       height: 100vh;
       max-height: 100vh;
       background: #000;
-      border: 6px solid #333;
+      border: 4px solid #222;
       position: relative;
-      box-shadow: 0 0 20px #ff0;
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -38,7 +37,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding: 10px;
+      padding: 6px;
       text-align: center;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
@@ -46,25 +45,25 @@
     .screen.active { display: flex; }
 
     #title-screen h1 {
-      font-size: clamp(28px, 8vw, 42px);
+      font-size: clamp(26px, 7.5vw, 40px);
       color: #ffcc00;
-      text-shadow: 4px 4px 0 #c00, 0 0 20px #ff0;
-      margin: 10px 0 6px;
+      text-shadow: 4px 4px 0 #c00, 0 0 16px #ff0;
+      margin: 8px 0 4px;
     }
-    .subtitle { font-size: clamp(11px, 3vw, 13px); color: #0f0; margin-bottom: 20px; letter-spacing: 2px; }
+    .subtitle { font-size: clamp(10px, 2.8vw, 12px); color: #0f0; margin-bottom: 18px; letter-spacing: 1px; }
 
     .menu-btn {
       background: #111;
       color: #ffcc00;
       border: 3px solid #ffcc00;
-      padding: 12px 16px;
-      margin: 5px auto;
+      padding: 11px 14px;
+      margin: 4px auto;
       font-family: 'Press Start 2P', monospace;
-      font-size: clamp(11px, 3vw, 13px);
+      font-size: clamp(10px, 2.8vw, 12px);
       cursor: pointer;
       width: 100%;
       max-width: 320px;
-      transition: 0.15s;
+      transition: 0.12s;
       display: block;
     }
     .menu-btn:hover, .menu-btn:active { background: #ffcc00; color: #000; }
@@ -72,8 +71,8 @@
       background: #002200;
       border-color: #0f0;
       color: #0f0;
-      font-size: clamp(13px, 3.5vw, 15px);
-      padding: 14px;
+      font-size: clamp(12px, 3.2vw, 14px);
+      padding: 13px;
     }
     .menu-btn.play:hover, .menu-btn.play:active { background: #0f0; color: #000; }
     .menu-btn.danger { border-color: #f00; color: #f00; }
@@ -87,96 +86,120 @@
     .profile-box {
       background: #111;
       border: 3px solid #0f0;
-      padding: 12px;
-      margin: 8px auto;
+      padding: 10px;
+      margin: 4px auto;
       width: 100%;
       max-width: 420px;
       text-align: left;
-      font-size: clamp(10px, 2.8vw, 12px);
+      font-size: clamp(9px, 2.6vw, 11px);
     }
-    .profile-box h3 { color: #0f0; text-align: center; margin-bottom: 8px; font-size: 13px; }
+    .profile-box h3 { color: #0f0; text-align: center; margin-bottom: 6px; font-size: 12px; }
+    #profiles { padding-top: 4px; }
+    #profiles .profile-box:first-child { margin-top: 0; }
     input[type="text"] {
       background: #000;
       border: 2px solid #ffcc00;
       color: #ffcc00;
       font-family: 'Press Start 2P', monospace;
-      font-size: 12px;
-      padding: 8px;
+      font-size: 11px;
+      padding: 7px;
       width: 100%;
-      margin: 6px 0 10px;
+      margin: 4px 0 8px;
       text-transform: uppercase;
     }
-    .stats { color: #aaa; line-height: 1.6; }
+    .stats { color: #aaa; line-height: 1.55; }
     .stats span { color: #fff; }
 
-    #highscores-list { width: 100%; max-width: 420px; margin: 12px auto; font-size: 11px; }
+    #highscores-list { width: 100%; max-width: 420px; margin: 10px auto; font-size: 10px; }
     #highscores-list .entry {
       display: flex;
       justify-content: space-between;
       border-bottom: 1px dashed #333;
-      padding: 4px 0;
+      padding: 3px 0;
     }
-    .rank { color: #ff0; width: 36px; }
+    .rank { color: #ff0; width: 32px; }
 
-    .footer { margin-top: auto; font-size: 9px; color: #555; padding: 8px; }
+    .footer { margin-top: auto; font-size: 8px; color: #444; padding: 6px; }
 
-    #game-screen { padding: 0; justify-content: flex-start; }
+    /* ===== GAME SCREEN ===== */
+    #game-screen {
+      padding: 0;
+      justify-content: flex-start;
+    }
     #game-ui {
-      height: 42px;
-      background: #111;
-      border-bottom: 3px solid #333;
+      height: 46px;
+      background: #0a0a0a;
+      border-bottom: 2px solid #333;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 8px;
-      font-size: clamp(9px, 2.5vw, 11px);
+      justify-content: space-evenly;
+      padding: 0 4px;
+      font-size: 9px;
       flex-shrink: 0;
+      gap: 6px;
     }
-    #canvas-wrapper {
-      flex: 1 1 auto;
+    .ui-group {
       display: flex;
       align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      min-height: 0;
-      background: #000;
+      gap: 4px;
+      white-space: nowrap;
     }
-    #canvas {
-      display: block;
-      max-width: 100%;
-      max-height: 100%;
-      background: #000;
-      image-rendering: pixelated;
+    .ui-label { color: #888; }
+    .ui-value { color: #ffcc00; }
+    .ui-value.money { color: #0f0; }
+    .ui-value.items { color: #ff66aa; }
+    #risk-container {
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
-
-    #risk-container { display: flex; align-items: center; gap: 6px; }
     #risk-bar {
-      width: 90px;
+      width: 72px;
       height: 10px;
-      background: #333;
-      border: 2px solid #666;
+      background: #222;
+      border: 1px solid #555;
+      position: relative;
     }
     #risk-fill {
       height: 100%;
       width: 0%;
       background: #0f0;
-      transition: width 0.3s, background 0.3s;
+      transition: width 0.25s, background 0.25s;
     }
     #alert-text {
       color: #ff0000;
-      font-size: 12px;
-      font-weight: bold;
-      text-shadow: 0 0 8px #ff0000;
+      font-size: 9px;
+      text-shadow: 0 0 6px #ff0000;
       opacity: 0;
-      transition: opacity 0.15s;
+      transition: opacity 0.12s;
+      min-width: 42px;
     }
     #alert-text.active {
       opacity: 1;
-      animation: alertFlash 0.35s ease-in-out infinite alternate;
+      animation: alertFlash 0.3s ease-in-out infinite alternate;
     }
     @keyframes alertFlash {
-      from { opacity: 1; transform: scale(1); }
-      to   { opacity: 0.25; transform: scale(1.15); }
+      from { opacity: 1; }
+      to   { opacity: 0.3; }
+    }
+
+    #canvas-wrapper {
+      flex: 0 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+    #canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      background: #000;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
     }
 
     #message-box {
@@ -184,84 +207,84 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.92);
-      border: 4px solid #ffcc00;
-      padding: 18px 24px;
-      font-size: 13px;
+      background: rgba(0,0,0,0.94);
+      border: 3px solid #ffcc00;
+      padding: 16px 20px;
+      font-size: 12px;
       text-align: center;
       z-index: 30;
       display: none;
-      min-width: 260px;
+      min-width: 240px;
       line-height: 1.5;
     }
     #message-box button {
-      margin-top: 12px;
+      margin-top: 10px;
       background: #111;
       color: #0f0;
       border: 2px solid #0f0;
-      padding: 8px 18px;
+      padding: 7px 16px;
       font-family: 'Press Start 2P', monospace;
-      font-size: 12px;
+      font-size: 11px;
       cursor: pointer;
     }
 
     #dpad {
       flex-shrink: 0;
-      height: 150px;
+      height: 132px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #111;
-      border-top: 3px solid #333;
+      background: #0a0a0a;
+      border-top: 2px solid #333;
       padding-bottom: env(safe-area-inset-bottom);
     }
     #dpad-inner {
       position: relative;
-      width: 140px;
-      height: 140px;
+      width: 128px;
+      height: 128px;
     }
     .dpad-btn {
       position: absolute;
-      width: 46px;
-      height: 46px;
-      background: #222;
+      width: 44px;
+      height: 44px;
+      background: #1a1a1a;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       user-select: none;
       touch-action: none;
       -webkit-tap-highlight-color: transparent;
-    }
-    .dpad-btn img {
-      width: 26px;
-      height: 26px;
-      pointer-events: none;
+      color: #ccc;
+      font-size: 22px;
+      line-height: 1;
     }
     .dpad-btn:active, .dpad-btn.pressed {
       background: #ffcc00;
-      box-shadow: 0 0 12px #ff0;
+      color: #000;
+      box-shadow: 0 0 10px #ff0;
     }
-    #btn-up    { top: 0;    left: 47px; }
-    #btn-down  { bottom: 0; left: 47px; }
-    #btn-left  { top: 47px; left: 0; }
-    #btn-right { top: 47px; right: 0; }
+    #btn-up    { top: 0;    left: 42px; }
+    #btn-down  { bottom: 0; left: 42px; }
+    #btn-left  { top: 42px; left: 0; }
+    #btn-right { top: 42px; right: 0; }
 
     @media (max-width: 500px) {
-      #dpad { height: 140px; }
-      #dpad-inner { width: 130px; height: 130px; }
-      .dpad-btn { width: 42px; height: 42px; }
-      .dpad-btn img { width: 22px; height: 22px; }
-      #btn-up, #btn-down { left: 44px; }
-      #btn-left, #btn-right { top: 44px; }
+      #game-ui { height: 42px; font-size: 8px; gap: 4px; }
+      #risk-bar { width: 60px; }
+      #dpad { height: 120px; }
+      #dpad-inner { width: 118px; height: 118px; }
+      .dpad-btn { width: 40px; height: 40px; font-size: 20px; }
+      #btn-up, #btn-down { left: 39px; }
+      #btn-left, #btn-right { top: 39px; }
     }
   </style>
 </head>
 <body>
   <div id="game-container">
     <div id="title-screen" class="screen active">
-      <canvas id="title-canvas" width="100" height="100" style="margin:10px 0;"></canvas>
+      <canvas id="title-canvas" width="100" height="100" style="margin:8px 0;"></canvas>
       <h1>FUD'S RUN</h1>
       <div class="subtitle">SUPERMARKET HEIST</div>
       <button class="menu-btn" onclick="showScreen('profiles')">START</button>
@@ -269,36 +292,44 @@
     </div>
 
     <div id="profiles" class="screen">
-      <h2 style="color:#0f0;margin:8px 0;font-size:clamp(16px,4vw,18px);">PLAYER PROFILE</h2>
       <div class="profile-box">
         <h3>CURRENT PROFILE</h3>
         <div id="current-profile-display" class="stats">Loading...</div>
       </div>
       <div class="profile-box">
         <h3>SAVE / LOAD / PLAY</h3>
-        <label style="font-size:10px;color:#aaa;">PROFILE NAME</label>
+        <label style="font-size:9px;color:#aaa;">PROFILE NAME</label>
         <input type="text" id="profile-name" maxlength="12" placeholder="ENTER NAME" oninput="enableSave()">
         <button class="menu-btn" id="save-btn" onclick="saveProfile()">💾 SAVE</button>
         <button class="menu-btn" onclick="loadProfile()">📂 LOAD</button>
         <button class="menu-btn danger" onclick="clearProfile()">🗑 CLEAR</button>
-        <button class="menu-btn" style="margin-top:12px;" onclick="showScreen('highscores')">HIGH SCORES</button>
+        <button class="menu-btn" style="margin-top:10px;" onclick="showScreen('highscores')">HIGH SCORES</button>
         <button class="menu-btn play" onclick="startGame()">▶ PLAY</button>
       </div>
     </div>
 
     <div id="highscores" class="screen">
-      <h2 style="color:#ff0;margin:10px 0;">HIGH SCORES</h2>
+      <h2 style="color:#ff0;margin:8px 0;font-size:16px;">HIGH SCORES</h2>
       <div id="highscores-list"></div>
       <button class="menu-btn" onclick="showScreen('profiles')">BACK</button>
     </div>
 
     <div id="game-screen" class="screen">
       <div id="game-ui">
-        <div>LVL <span id="ui-level">1</span></div>
-        <div>$<span id="ui-value">0</span></div>
-        <div>ITEMS <span id="ui-items">0</span></div>
-        <div id="risk-container">
-          RISK 
+        <div class="ui-group">
+          <span class="ui-label">LVL</span>
+          <span class="ui-value" id="ui-level">1</span>
+        </div>
+        <div class="ui-group">
+          <span class="ui-value money">$</span>
+          <span class="ui-value money" id="ui-value">0</span>
+        </div>
+        <div class="ui-group">
+          <span class="ui-label">ITEMS</span>
+          <span class="ui-value items" id="ui-items">0</span>
+        </div>
+        <div id="risk-container" class="ui-group">
+          <span class="ui-label">RISK</span>
           <div id="risk-bar"><div id="risk-fill"></div></div>
           <span id="alert-text"></span>
         </div>
@@ -308,10 +339,10 @@
       </div>
       <div id="dpad">
         <div id="dpad-inner">
-          <div class="dpad-btn" id="btn-up"><img src="up.png" alt="UP"></div>
-          <div class="dpad-btn" id="btn-down"><img src="down.png" alt="DOWN"></div>
-          <div class="dpad-btn" id="btn-left"><img src="left.png" alt="LEFT"></div>
-          <div class="dpad-btn" id="btn-right"><img src="right.png" alt="RIGHT"></div>
+          <div class="dpad-btn" id="btn-up">▲</div>
+          <div class="dpad-btn" id="btn-down">▼</div>
+          <div class="dpad-btn" id="btn-left">◀</div>
+          <div class="dpad-btn" id="btn-right">▶</div>
         </div>
       </div>
       <div id="message-box">
@@ -321,14 +352,14 @@
     </div>
 
     <div id="credits" class="screen">
-      <h2 style="color:#ffcc00;margin:20px 0;">FUD'S RUN</h2>
-      <div style="font-size:13px;line-height:1.9;color:#0f0;">
+      <h2 style="color:#ffcc00;margin:16px 0;">FUD'S RUN</h2>
+      <div style="font-size:12px;line-height:1.8;color:#0f0;">
         CONGRATULATIONS!<br><br>
         YOU BEAT ALL 5 LEVELS<br><br>
         TOTAL HAUL: $<span id="final-value">0</span><br><br>
         THANKS FOR PLAYING
       </div>
-      <button class="menu-btn" style="margin-top:25px;" onclick="showScreen('profiles')">BACK TO PROFILE</button>
+      <button class="menu-btn" style="margin-top:20px;" onclick="showScreen('profiles')">BACK TO PROFILE</button>
     </div>
   </div>
 
@@ -439,11 +470,7 @@
     const ctx = canvas.getContext('2d');
     const TILE = 32;
 
-    // 0 = path, 1 = shelf/wall
-    // 2 = EXIT (bottom border)
-    // 3 = ENTRANCE (bottom border)
     const MAZES = [
-      // Level 1 - Grocery
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -459,7 +486,6 @@
         [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
       ],
-      // Level 2
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -475,7 +501,6 @@
         [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
       ],
-      // Level 3
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -491,7 +516,6 @@
         [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
       ],
-      // Level 4
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -507,7 +531,6 @@
         [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
       ],
-      // Level 5
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -556,7 +579,6 @@
     function loadLevel(lvl) {
       currentLevel = lvl;
       maze = MAZES[lvl];
-      // Start safely inside the store (row 10)
       fud = { x: 9 * TILE + 16, y: 10 * TILE + 16, speed: 2.1 };
       totalValue = 0;
       inventory = [];
@@ -650,7 +672,6 @@
         return true;
       });
 
-      // Only EXIT (value 2) completes the level
       const tileX = Math.floor(fud.x / TILE);
       const tileY = Math.floor(fud.y / TILE);
       if (maze[tileY] && maze[tileY][tileX] === 2) {
@@ -752,14 +773,12 @@
             ctx.fillStyle = '#0055aa';
             ctx.fillRect(x*TILE, y*TILE, TILE-1, TILE-1);
           } else if (maze[y][x] === 2) {
-            // EXIT in the bottom border
             ctx.fillStyle = '#00cc00';
             ctx.fillRect(x*TILE+2, y*TILE+2, TILE-4, TILE-4);
             ctx.fillStyle = '#000';
             ctx.font = '7px Press Start 2P';
             ctx.fillText('EXIT', x*TILE+2, y*TILE+20);
           } else if (maze[y][x] === 3) {
-            // ENTRANCE in the bottom border
             ctx.fillStyle = '#00aaff';
             ctx.fillRect(x*TILE+2, y*TILE+2, TILE-4, TILE-4);
             ctx.fillStyle = '#000';
