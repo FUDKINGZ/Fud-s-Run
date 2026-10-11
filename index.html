@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
   <title>FUD'S RUN</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -16,16 +16,19 @@
       align-items: center;
       min-height: 100vh;
       overflow: hidden;
+      touch-action: none;
     }
     #game-container {
-      width: 800px;
-      max-width: 95vw;
-      height: 620px;
-      max-height: 95vh;
+      width: 100%;
+      max-width: 800px;
+      height: 100vh;
+      max-height: 100vh;
       background: #000;
-      border: 8px solid #333;
+      border: 6px solid #333;
       position: relative;
-      box-shadow: 0 0 30px #ff0, inset 0 0 40px #111;
+      box-shadow: 0 0 20px #ff0;
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
     }
     .screen {
@@ -34,54 +37,62 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 12px;
+      justify-content: flex-start;
+      padding: 10px;
       text-align: center;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .screen.active { display: flex; }
 
     #title-screen h1 {
-      font-size: 42px;
+      font-size: clamp(28px, 8vw, 42px);
       color: #ffcc00;
       text-shadow: 4px 4px 0 #c00, 0 0 20px #ff0;
-      margin: 15px 0 8px;
+      margin: 10px 0 6px;
     }
-    .subtitle { font-size: 13px; color: #0f0; margin-bottom: 30px; letter-spacing: 2px; }
+    .subtitle { font-size: clamp(11px, 3vw, 13px); color: #0f0; margin-bottom: 20px; letter-spacing: 2px; }
 
     .menu-btn {
       background: #111;
       color: #ffcc00;
       border: 3px solid #ffcc00;
-      padding: 12px 20px;
-      margin: 6px;
+      padding: 12px 16px;
+      margin: 5px auto;
       font-family: 'Press Start 2P', monospace;
-      font-size: 12px;
+      font-size: clamp(11px, 3vw, 13px);
       cursor: pointer;
-      min-width: 220px;
+      width: 100%;
+      max-width: 320px;
       transition: 0.15s;
+      display: block;
     }
-    .menu-btn:hover { background: #ffcc00; color: #000; box-shadow: 0 0 15px #ff0; }
+    .menu-btn:hover, .menu-btn:active { background: #ffcc00; color: #000; }
     .menu-btn.play {
       background: #002200;
       border-color: #0f0;
       color: #0f0;
-      font-size: 14px;
-      padding: 14px 24px;
+      font-size: clamp(13px, 3.5vw, 15px);
+      padding: 14px;
     }
-    .menu-btn.play:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
+    .menu-btn.play:hover, .menu-btn.play:active { background: #0f0; color: #000; }
     .menu-btn.danger { border-color: #f00; color: #f00; }
-    .menu-btn.danger:hover { background: #f00; color: #000; }
+    .menu-btn:disabled {
+      opacity: 0.4;
+      pointer-events: none;
+      border-color: #555;
+      color: #555;
+    }
 
     .profile-box {
       background: #111;
       border: 3px solid #0f0;
       padding: 12px;
-      margin: 8px 0;
-      width: 95%;
-      max-width: 460px;
+      margin: 8px auto;
+      width: 100%;
+      max-width: 420px;
       text-align: left;
-      font-size: 11px;
+      font-size: clamp(10px, 2.8vw, 12px);
     }
     .profile-box h3 { color: #0f0; text-align: center; margin-bottom: 8px; font-size: 13px; }
     input[type="text"] {
@@ -98,7 +109,7 @@
     .stats { color: #aaa; line-height: 1.6; }
     .stats span { color: #fff; }
 
-    #highscores-list { width: 95%; max-width: 460px; margin: 12px 0; font-size: 11px; }
+    #highscores-list { width: 100%; max-width: 420px; margin: 12px auto; font-size: 11px; }
     #highscores-list .entry {
       display: flex;
       justify-content: space-between;
@@ -107,40 +118,41 @@
     }
     .rank { color: #ff0; width: 36px; }
 
-    .footer { position: absolute; bottom: 10px; font-size: 9px; color: #555; }
+    .footer { margin-top: auto; font-size: 9px; color: #555; padding: 8px; }
 
-    /* Game UI */
-    #game-screen { background: #000; padding: 0; }
+    #game-screen { padding: 0; justify-content: flex-start; }
     #game-ui {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 48px;
+      height: 42px;
       background: #111;
       border-bottom: 3px solid #333;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 12px;
-      font-size: 11px;
-      z-index: 10;
+      padding: 0 8px;
+      font-size: clamp(9px, 2.5vw, 11px);
+      flex-shrink: 0;
+    }
+    #canvas-wrapper {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-height: 0;
+      background: #000;
     }
     #canvas {
       display: block;
-      margin: 48px auto 0;
+      max-width: 100%;
+      max-height: 100%;
       background: #000;
       image-rendering: pixelated;
     }
 
-    /* RISK + ALERT */
-    #risk-container {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 190px;
-    }
+    #risk-container { display: flex; align-items: center; gap: 6px; }
     #risk-bar {
-      width: 110px;
-      height: 11px;
+      width: 90px;
+      height: 10px;
       background: #333;
       border: 2px solid #666;
     }
@@ -152,12 +164,11 @@
     }
     #alert-text {
       color: #ff0000;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
-      text-shadow: 0 0 10px #ff0000, 0 0 4px #ff0000;
+      text-shadow: 0 0 8px #ff0000;
       opacity: 0;
       transition: opacity 0.15s;
-      letter-spacing: 1px;
     }
     #alert-text.active {
       opacity: 1;
@@ -165,10 +176,9 @@
     }
     @keyframes alertFlash {
       from { opacity: 1; transform: scale(1); }
-      to   { opacity: 0.25; transform: scale(1.2); }
+      to   { opacity: 0.25; transform: scale(1.15); }
     }
 
-    /* On-screen message */
     #message-box {
       position: absolute;
       top: 50%;
@@ -176,104 +186,153 @@
       transform: translate(-50%, -50%);
       background: rgba(0,0,0,0.92);
       border: 4px solid #ffcc00;
-      padding: 20px 30px;
-      font-size: 14px;
+      padding: 18px 24px;
+      font-size: 13px;
       text-align: center;
-      z-index: 20;
+      z-index: 30;
       display: none;
-      min-width: 280px;
-      line-height: 1.6;
+      min-width: 260px;
+      line-height: 1.5;
     }
     #message-box button {
-      margin-top: 15px;
+      margin-top: 12px;
       background: #111;
       color: #0f0;
       border: 2px solid #0f0;
-      padding: 8px 20px;
+      padding: 8px 18px;
       font-family: 'Press Start 2P', monospace;
       font-size: 12px;
       cursor: pointer;
+    }
+
+    #dpad {
+      flex-shrink: 0;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #111;
+      border-top: 3px solid #333;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    #dpad-inner {
+      position: relative;
+      width: 140px;
+      height: 140px;
+    }
+    .dpad-btn {
+      position: absolute;
+      width: 46px;
+      height: 46px;
+      background: #222;
+      border: none;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      touch-action: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .dpad-btn img {
+      width: 26px;
+      height: 26px;
+      pointer-events: none;
+    }
+    .dpad-btn:active, .dpad-btn.pressed {
+      background: #ffcc00;
+      box-shadow: 0 0 12px #ff0;
+    }
+    #btn-up    { top: 0;    left: 47px; }
+    #btn-down  { bottom: 0; left: 47px; }
+    #btn-left  { top: 47px; left: 0; }
+    #btn-right { top: 47px; right: 0; }
+
+    @media (max-width: 500px) {
+      #dpad { height: 140px; }
+      #dpad-inner { width: 130px; height: 130px; }
+      .dpad-btn { width: 42px; height: 42px; }
+      .dpad-btn img { width: 22px; height: 22px; }
+      #btn-up, #btn-down { left: 44px; }
+      #btn-left, #btn-right { top: 44px; }
     }
   </style>
 </head>
 <body>
   <div id="game-container">
-    <!-- TITLE -->
     <div id="title-screen" class="screen active">
-      <canvas id="title-canvas" width="120" height="120" style="margin-bottom:10px;"></canvas>
+      <canvas id="title-canvas" width="100" height="100" style="margin:10px 0;"></canvas>
       <h1>FUD'S RUN</h1>
       <div class="subtitle">SUPERMARKET HEIST</div>
       <button class="menu-btn" onclick="showScreen('profiles')">START</button>
       <div class="footer">© 2026 ARCADE HEIST CO.</div>
     </div>
 
-    <!-- PROFILE -->
     <div id="profiles" class="screen">
-      <h2 style="color:#0f0;margin-bottom:8px;font-size:18px;">PLAYER PROFILE</h2>
-
+      <h2 style="color:#0f0;margin:8px 0;font-size:clamp(16px,4vw,18px);">PLAYER PROFILE</h2>
       <div class="profile-box">
         <h3>CURRENT PROFILE</h3>
         <div id="current-profile-display" class="stats">Loading...</div>
       </div>
-
       <div class="profile-box">
         <h3>SAVE / LOAD / PLAY</h3>
         <label style="font-size:10px;color:#aaa;">PROFILE NAME</label>
-        <input type="text" id="profile-name" maxlength="12" placeholder="ENTER NAME">
-        
-        <button class="menu-btn" style="min-width:100%;margin:3px 0;font-size:11px;" onclick="saveProfile()">💾 SAVE</button>
-        <button class="menu-btn" style="min-width:100%;margin:3px 0;font-size:11px;" onclick="loadProfile()">📂 LOAD</button>
-        <button class="menu-btn danger" style="min-width:100%;margin:3px 0;font-size:11px;" onclick="clearProfile()">🗑 CLEAR</button>
-        
-        <button class="menu-btn play" style="min-width:100%;margin:10px 0 4px;" onclick="startGame()">▶ PLAY</button>
-        <button class="menu-btn" style="min-width:100%;margin:3px 0;font-size:11px;" onclick="showScreen('highscores')">HIGH SCORES</button>
+        <input type="text" id="profile-name" maxlength="12" placeholder="ENTER NAME" oninput="enableSave()">
+        <button class="menu-btn" id="save-btn" onclick="saveProfile()">💾 SAVE</button>
+        <button class="menu-btn" onclick="loadProfile()">📂 LOAD</button>
+        <button class="menu-btn danger" onclick="clearProfile()">🗑 CLEAR</button>
+        <button class="menu-btn" style="margin-top:12px;" onclick="showScreen('highscores')">HIGH SCORES</button>
+        <button class="menu-btn play" onclick="startGame()">▶ PLAY</button>
       </div>
-
-      <button class="menu-btn" style="font-size:11px;min-width:180px;margin-top:6px;" onclick="showScreen('title-screen')">BACK</button>
     </div>
 
-    <!-- HIGH SCORES -->
     <div id="highscores" class="screen">
-      <h2 style="color:#ff0;margin-bottom:10px;">HIGH SCORES</h2>
+      <h2 style="color:#ff0;margin:10px 0;">HIGH SCORES</h2>
       <div id="highscores-list"></div>
       <button class="menu-btn" onclick="showScreen('profiles')">BACK</button>
     </div>
 
-    <!-- GAME -->
     <div id="game-screen" class="screen">
       <div id="game-ui">
         <div>LVL <span id="ui-level">1</span></div>
-        <div>VALUE: $<span id="ui-value">0</span></div>
-        <div>ITEMS: <span id="ui-items">0</span></div>
+        <div>$<span id="ui-value">0</span></div>
+        <div>ITEMS <span id="ui-items">0</span></div>
         <div id="risk-container">
           RISK 
           <div id="risk-bar"><div id="risk-fill"></div></div>
           <span id="alert-text"></span>
         </div>
       </div>
-      <canvas id="canvas" width="760" height="540"></canvas>
+      <div id="canvas-wrapper">
+        <canvas id="canvas" width="608" height="416"></canvas>
+      </div>
+      <div id="dpad">
+        <div id="dpad-inner">
+          <div class="dpad-btn" id="btn-up"><img src="up.png" alt="UP"></div>
+          <div class="dpad-btn" id="btn-down"><img src="down.png" alt="DOWN"></div>
+          <div class="dpad-btn" id="btn-left"><img src="left.png" alt="LEFT"></div>
+          <div class="dpad-btn" id="btn-right"><img src="right.png" alt="RIGHT"></div>
+        </div>
+      </div>
       <div id="message-box">
         <div id="message-text"></div>
-        <button id="message-btn" onclick="hideMessage()">OK</button>
+        <button onclick="hideMessage()">OK</button>
       </div>
     </div>
 
-    <!-- CREDITS -->
     <div id="credits" class="screen">
-      <h2 style="color:#ffcc00;margin-bottom:20px;">FUD'S RUN</h2>
-      <div style="font-size:13px;line-height:2;color:#0f0;">
+      <h2 style="color:#ffcc00;margin:20px 0;">FUD'S RUN</h2>
+      <div style="font-size:13px;line-height:1.9;color:#0f0;">
         CONGRATULATIONS!<br><br>
         YOU BEAT ALL 5 LEVELS<br><br>
         TOTAL HAUL: $<span id="final-value">0</span><br><br>
-        THANKS FOR PLAYING<br><br>
-        <span style="color:#aaa;font-size:11px;">A CLASSIC ARCADE HEIST</span>
+        THANKS FOR PLAYING
       </div>
-      <button class="menu-btn" style="margin-top:30px;" onclick="showScreen('profiles')">BACK TO PROFILE</button>
+      <button class="menu-btn" style="margin-top:25px;" onclick="showScreen('profiles')">BACK TO PROFILE</button>
     </div>
   </div>
 
   <script>
-    // ========== PROFILE ==========
     const DEFAULT_PROFILE = {
       name: "PLAYER", totalValue: 0, itemsStolen: 0,
       levelsUnlocked: 1, bestRunValue: 0, lastPlayed: null
@@ -306,6 +365,7 @@
         <div>LAST PLAYED: <span>${currentProfile.lastPlayed || 'NEVER'}</span></div>`;
       document.getElementById('profile-name').value = currentProfile.name;
     }
+    function enableSave() { document.getElementById('save-btn').disabled = false; }
     function saveProfile() {
       const name = document.getElementById('profile-name').value.trim().toUpperCase() || "PLAYER";
       currentProfile.name = name;
@@ -319,7 +379,10 @@
         localStorage.setItem('fudHighScores', JSON.stringify(highScores));
       }
       updateProfileDisplay();
-      showMessage(`PROFILE "${name}" SAVED!`);
+      document.getElementById('save-btn').disabled = true;
+      if (document.getElementById('profiles').classList.contains('active')) {
+        showMessage(`PROFILE "${name}" SAVED!`);
+      }
     }
     function loadProfile() {
       const name = document.getElementById('profile-name').value.trim().toUpperCase();
@@ -329,6 +392,7 @@
         currentProfile = JSON.parse(saved);
         localStorage.setItem('fudCurrentProfile', name);
         updateProfileDisplay();
+        document.getElementById('save-btn').disabled = true;
         showMessage(`PROFILE "${name}" LOADED!`);
       } else {
         currentProfile = {...DEFAULT_PROFILE, name};
@@ -338,6 +402,7 @@
     function clearProfile() {
       currentProfile = {...DEFAULT_PROFILE, name: currentProfile.name};
       updateProfileDisplay();
+      document.getElementById('save-btn').disabled = false;
       showMessage("PROFILE CLEARED");
     }
     function init() {
@@ -349,8 +414,6 @@
       updateProfileDisplay();
       drawTitleFud();
     }
-
-    // ========== MESSAGES ==========
     function showMessage(text, callback) {
       document.getElementById('message-text').innerHTML = text;
       document.getElementById('message-box').style.display = 'block';
@@ -360,55 +423,123 @@
       document.getElementById('message-box').style.display = 'none';
       if (window._msgCallback) window._msgCallback();
     }
-
-    // ========== TITLE FUD ==========
     function drawTitleFud() {
       const c = document.getElementById('title-canvas');
       const ctx = c.getContext('2d');
-      ctx.clearRect(0,0,120,120);
-      ctx.fillStyle = '#ffcc00';
-      ctx.fillRect(40, 50, 40, 35);
-      ctx.fillStyle = '#ffcc99';
-      ctx.fillRect(42, 25, 36, 30);
-      ctx.fillStyle = '#cc0000';
-      ctx.fillRect(38, 15, 44, 14);
-      ctx.fillRect(48, 5, 24, 12);
-      ctx.fillStyle = '#000';
-      ctx.fillRect(50, 35, 8, 8);
-      ctx.fillRect(62, 35, 8, 8);
-      ctx.fillStyle = '#1a3a8a';
-      ctx.fillRect(42, 85, 14, 18);
-      ctx.fillRect(64, 85, 14, 18);
+      ctx.clearRect(0,0,100,100);
+      ctx.fillStyle = '#ffcc00'; ctx.fillRect(30, 42, 40, 32);
+      ctx.fillStyle = '#ffcc99'; ctx.fillRect(32, 20, 36, 28);
+      ctx.fillStyle = '#cc0000'; ctx.fillRect(28, 12, 44, 12); ctx.fillRect(38, 4, 24, 10);
+      ctx.fillStyle = '#000'; ctx.fillRect(40, 28, 8, 8); ctx.fillRect(52, 28, 8, 8);
+      ctx.fillStyle = '#1a3a8a'; ctx.fillRect(32, 74, 14, 16); ctx.fillRect(54, 74, 14, 16);
     }
 
-    // ========== GAME ==========
+    // ===== GAME =====
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    const TILE = 40;
+    const TILE = 32;
 
+    // 0 = path, 1 = shelf/wall
+    // 2 = EXIT (bottom border)
+    // 3 = ENTRANCE (bottom border)
     const MAZES = [
-      [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],[1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,1,0,1,1,1,1,0,1,0,1,1,1,1,0,1,0,1],[1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1],[1,0,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1],[1,0,0,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0,1],[1,1,1,0,1,0,1,1,1,0,1,1,1,0,1,0,1,1,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],
-      [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1],[1,0,1,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,1],[1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],[1,0,1,1,1,1,0,1,0,1,0,1,0,1,1,1,1,0,1],[1,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,1],[1,1,1,0,1,1,1,1,0,1,0,1,1,1,1,0,1,1,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,0,1],[1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1],[1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],
-      [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1],[1,0,1,1,1,1,1,0,1,0,1,0,1,1,1,1,1,0,1],[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],[1,1,1,0,1,0,1,1,1,1,1,1,1,0,1,0,1,1,1],[1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1],[1,0,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1,0,1],[1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1],[1,1,1,0,1,1,1,0,1,0,1,0,1,1,1,0,1,1,1],[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],[1,0,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],
-      [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1],[1,0,1,1,0,1,0,1,1,1,1,1,0,1,0,1,1,0,1],[1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],[1,0,1,0,1,1,1,1,0,1,0,1,1,1,1,0,1,0,1],[1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],[1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,1,0,1,1,1,1,0,1,0,1,1,1,1,0,1,0,1],[1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],[1,0,1,1,0,1,0,1,1,1,1,1,0,1,0,1,1,0,1],[1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,2,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],
-      [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1],[1,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,0,1],[1,0,1,0,1,1,1,0,1,0,1,0,1,1,1,0,1,0,1],[1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1],[1,1,1,0,1,0,1,1,1,1,1,1,1,0,1,0,1,1,1],[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],[1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1],[1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1],[1,1,1,0,1,1,1,1,0,1,0,1,1,1,1,0,1,1,1],[1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,2,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]
+      // Level 1 - Grocery
+      [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1],
+        [1,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,0,1],
+        [1,0,1,0,1,1,1,0,1,0,1,0,1,1,1,0,1,0,1],
+        [1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1],
+        [1,0,1,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,1],
+        [1,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1],
+        [1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      ],
+      // Level 2
+      [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
+        [1,0,1,1,1,1,0,1,0,1,0,1,0,1,1,1,1,0,1],
+        [1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,1],
+        [1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,1,1,0,1,1,0,1,0,1,1,0,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      ],
+      // Level 3
+      [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,0,1],
+        [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
+        [1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      ],
+      // Level 4
+      [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,1,1,1,0,0,1,1,1,0,0,1,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,1,1,1,1,0,1,0,1,1,1,1,0,1,0,1],
+        [1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1],
+        [1,0,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,1,0,1,1,0,1,1,1,0,1,1,0,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      ],
+      // Level 5
+      [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1],
+        [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
+        [1,0,1,1,1,0,1,1,0,1,0,1,1,0,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
+        [1,1,0,1,1,1,1,0,1,1,1,0,1,1,1,1,0,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,1,0,1,0,1,1,1,1,1,0,1,0,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      ]
     ];
 
     const ITEMS_LIST = [
-      {name:"Drinks", value:3, color:"#0af"},
-      {name:"Bread", value:4, color:"#da8"},
-      {name:"Candy", value:2, color:"#f5a"},
-      {name:"Milk", value:5, color:"#eee"},
-      {name:"Dog Food", value:12, color:"#a84"},
-      {name:"Toys", value:15, color:"#f90"},
-      {name:"Headphones", value:40, color:"#888"},
-      {name:"Jewelry", value:80, color:"#ff0"},
-      {name:"Cigarettes", value:10, color:"#c44"}
+      {name:"Drinks", value:3},
+      {name:"Bread", value:4},
+      {name:"Candy", value:2},
+      {name:"Milk", value:5},
+      {name:"Dog Food", value:12},
+      {name:"Toys", value:15},
+      {name:"Headphones", value:40},
+      {name:"Jewelry", value:80},
+      {name:"Cigarettes", value:10}
     ];
 
     let currentLevel = 0;
     let maze = MAZES[0];
-    let fud = { x: 60, y: 60, speed: 2.3 };
+    let fud = { x: 304, y: 336, speed: 2.1 };
     let guards = [];
     let items = [];
     let inventory = [];
@@ -417,6 +548,7 @@
     let keys = {};
 
     function startGame() {
+      document.getElementById('message-box').style.display = 'none';
       currentLevel = 0;
       loadLevel(0);
     }
@@ -424,21 +556,22 @@
     function loadLevel(lvl) {
       currentLevel = lvl;
       maze = MAZES[lvl];
-      fud = { x: 60, y: 60, speed: 2.3 };
+      // Start safely inside the store (row 10)
+      fud = { x: 9 * TILE + 16, y: 10 * TILE + 16, speed: 2.1 };
       totalValue = 0;
       inventory = [];
       items = [];
       guards = [
-        { x: 380, y: 140, mode: 'roam', timer: 0 },
-        { x: 620, y: 300, mode: 'roam', timer: 0 },
-        { x: 220, y: 380, mode: 'roam', timer: 0 }
+        { x: 3*TILE+16, y: 3*TILE+16, mode: 'roam', timer: 0 },
+        { x: 15*TILE+16, y: 5*TILE+16, mode: 'roam', timer: 0 },
+        { x: 9*TILE+16, y: 7*TILE+16, mode: 'roam', timer: 0 }
       ];
 
-      for (let y = 0; y < 13; y++) {
-        for (let x = 0; x < 19; x++) {
-          if (maze[y][x] === 0 && Math.random() < 0.15) {
+      for (let y = 1; y < 11; y++) {
+        for (let x = 1; x < 18; x++) {
+          if (maze[y][x] === 0 && Math.random() < 0.14) {
             const it = ITEMS_LIST[Math.floor(Math.random() * ITEMS_LIST.length)];
-            items.push({ x: x*40+20, y: y*40+20, ...it });
+            items.push({ x: x*TILE + 16, y: y*TILE + 16, ...it });
           }
         }
       }
@@ -459,7 +592,6 @@
       fill.style.background = risk > 70 ? '#f00' : risk > 35 ? '#ff0' : '#0f0';
     }
 
-    // Metal Gear style ALERT!
     function triggerAlert() {
       const alertEl = document.getElementById('alert-text');
       alertEl.textContent = 'ALERT!';
@@ -471,16 +603,16 @@
     }
 
     function canMove(px, py) {
-      const pts = [[px-10,py-12],[px+10,py-12],[px-10,py+12],[px+10,py+12]];
+      const pts = [[px-8,py-10],[px+8,py-10],[px-8,py+10],[px+8,py+10]];
       for (let [x,y] of pts) {
-        const tx = Math.floor(x/40), ty = Math.floor(y/40);
+        const tx = Math.floor(x/TILE), ty = Math.floor(y/TILE);
         if (tx<0 || tx>=19 || ty<0 || ty>=13 || maze[ty][tx]===1) return false;
       }
       return true;
     }
 
     function isOnSameAisle(g, p) {
-      return Math.floor(g.x/40) === Math.floor(p.x/40) || Math.floor(g.y/40) === Math.floor(p.y/40);
+      return Math.floor(g.x/TILE) === Math.floor(p.x/TILE) || Math.floor(g.y/TILE) === Math.floor(p.y/TILE);
     }
 
     function gameLoop() {
@@ -501,12 +633,10 @@
       if (dy && canMove(fud.x, fud.y+dy)) fud.y += dy;
 
       items = items.filter(it => {
-        if (Math.hypot(it.x-fud.x, it.y-fud.y) < 18) {
+        if (Math.hypot(it.x-fud.x, it.y-fud.y) < 14) {
           inventory.push(it);
           totalValue += it.value;
           updateUI();
-
-          // Only alert if a guard is on the same aisle
           let alertTriggered = false;
           guards.forEach(g => {
             if (g.mode === 'roam' && isOnSameAisle(g, fud)) {
@@ -515,13 +645,15 @@
             }
           });
           if (alertTriggered) triggerAlert();
-
           return false;
         }
         return true;
       });
 
-      if (Math.floor(fud.x/40) === 17 && Math.floor(fud.y/40) === 11) {
+      // Only EXIT (value 2) completes the level
+      const tileX = Math.floor(fud.x / TILE);
+      const tileY = Math.floor(fud.y / TILE);
+      if (maze[tileY] && maze[tileY][tileX] === 2) {
         winLevel();
         return;
       }
@@ -532,73 +664,107 @@
           if (g.timer > 45) {
             g.timer = 0;
             const d = [[1,0],[-1,0],[0,1],[0,-1]][Math.floor(Math.random()*4)];
-            const nx = g.x + d[0]*9, ny = g.y + d[1]*9;
+            const nx = g.x + d[0]*7, ny = g.y + d[1]*7;
             if (canMove(nx,ny)) { g.x=nx; g.y=ny; }
           }
         } else {
           if (g.timer > 10) {
             g.timer = 0;
             let nx=g.x, ny=g.y;
-            if (fud.x > g.x+8) nx += 2.6;
-            else if (fud.x < g.x-8) nx -= 2.6;
-            if (fud.y > g.y+8) ny += 2.6;
-            else if (fud.y < g.y-8) ny -= 2.6;
+            if (fud.x > g.x+6) nx += 2.2;
+            else if (fud.x < g.x-6) nx -= 2.2;
+            if (fud.y > g.y+6) ny += 2.2;
+            else if (fud.y < g.y-6) ny -= 2.2;
             if (canMove(nx,g.y)) g.x = nx;
             if (canMove(g.x,ny)) g.y = ny;
           }
-          if (Math.hypot(g.x-fud.x, g.y-fud.y) < 22) loseLevel();
+          if (Math.hypot(g.x-fud.x, g.y-fud.y) < 18) loseLevel();
         }
       });
     }
 
     function drawHuman(x, y, isPlayer) {
       ctx.fillStyle = isPlayer ? '#ffcc00' : '#2255cc';
-      ctx.fillRect(x-8, y-4, 16, 13);
+      ctx.fillRect(x-7, y-3, 14, 11);
       ctx.fillStyle = '#ffcc99';
-      ctx.fillRect(x-7, y-15, 14, 12);
+      ctx.fillRect(x-6, y-13, 12, 11);
       if (isPlayer) {
         ctx.fillStyle = '#cc0000';
-        ctx.fillRect(x-9, y-19, 18, 5);
-        ctx.fillRect(x-5, y-23, 10, 5);
+        ctx.fillRect(x-8, y-17, 16, 5);
+        ctx.fillRect(x-4, y-21, 8, 5);
       } else {
         ctx.fillStyle = '#111';
-        ctx.fillRect(x-9, y-18, 18, 5);
+        ctx.fillRect(x-8, y-16, 16, 5);
       }
       ctx.fillStyle = '#000';
-      ctx.fillRect(x-4, y-11, 3, 3);
-      ctx.fillRect(x+1, y-11, 3, 3);
+      ctx.fillRect(x-3, y-9, 3, 3);
+      ctx.fillRect(x+1, y-9, 3, 3);
       ctx.fillStyle = isPlayer ? '#1a3a8a' : '#111';
-      ctx.fillRect(x-7, y+9, 5, 7);
-      ctx.fillRect(x+2, y+9, 5, 7);
+      ctx.fillRect(x-6, y+8, 4, 6);
+      ctx.fillRect(x+2, y+8, 4, 6);
       ctx.fillStyle = '#ffcc99';
-      ctx.fillRect(x-12, y-1, 4, 7);
-      ctx.fillRect(x+8, y-1, 4, 7);
+      ctx.fillRect(x-11, y-1, 4, 6);
+      ctx.fillRect(x+7, y-1, 4, 6);
     }
 
     function drawItem(it) {
-      ctx.fillStyle = it.color;
-      if (it.name === "Drinks") ctx.fillRect(it.x-5, it.y-9, 10, 15);
-      else if (it.name === "Bread") { ctx.beginPath(); ctx.ellipse(it.x,it.y,9,5,0,0,Math.PI*2); ctx.fill(); }
-      else if (it.name === "Candy") ctx.fillRect(it.x-7, it.y-4, 14, 8);
-      else if (it.name === "Headphones") { ctx.beginPath(); ctx.arc(it.x,it.y,8,0,Math.PI*2); ctx.fill(); }
-      else if (it.name === "Jewelry") { ctx.beginPath(); ctx.moveTo(it.x,it.y-7); ctx.lineTo(it.x+7,it.y+5); ctx.lineTo(it.x-7,it.y+5); ctx.fill(); }
-      else ctx.fillRect(it.x-6, it.y-6, 12, 12);
+      const x = it.x, y = it.y;
+      if (it.name === "Drinks") {
+        ctx.fillStyle = '#0099ff'; ctx.fillRect(x-7, y-11, 14, 20);
+        ctx.fillStyle = '#66ccff'; ctx.fillRect(x-5, y-9, 10, 4);
+        ctx.fillStyle = '#ff3333'; ctx.beginPath(); ctx.arc(x, y+2, 5, 0, Math.PI*2); ctx.fill();
+      } else if (it.name === "Bread") {
+        ctx.fillStyle = '#e8b86d'; ctx.beginPath(); ctx.ellipse(x, y, 12, 8, 0, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#c9924a'; ctx.fillRect(x-9, y-2, 18, 3);
+      } else if (it.name === "Candy") {
+        ctx.fillStyle = '#ff66aa'; ctx.fillRect(x-10, y-6, 20, 12);
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(x-3, y-6, 6, 12);
+      } else if (it.name === "Milk") {
+        ctx.fillStyle = '#f5f5f5'; ctx.fillRect(x-8, y-12, 16, 22);
+        ctx.fillStyle = '#4488ff'; ctx.fillRect(x-6, y-10, 12, 6);
+      } else if (it.name === "Dog Food") {
+        ctx.fillStyle = '#b87333'; ctx.fillRect(x-9, y-11, 18, 20);
+        ctx.fillStyle = '#d4a017'; ctx.fillRect(x-7, y-9, 14, 5);
+        ctx.fillStyle = '#fff'; ctx.font = '7px Press Start 2P'; ctx.fillText('DOG', x-8, y+3);
+      } else if (it.name === "Toys") {
+        ctx.fillStyle = '#ff9900'; ctx.beginPath(); ctx.arc(x, y-3, 9, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#ff7700'; ctx.fillRect(x-7, y+4, 5, 8); ctx.fillRect(x+2, y+4, 5, 8);
+      } else if (it.name === "Headphones") {
+        ctx.strokeStyle = '#555'; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.arc(x, y, 11, Math.PI*1.1, Math.PI*1.9); ctx.stroke();
+        ctx.fillStyle = '#333'; ctx.fillRect(x-14, y-5, 6, 12); ctx.fillRect(x+8, y-5, 6, 12);
+      } else if (it.name === "Jewelry") {
+        ctx.fillStyle = '#ffd700';
+        ctx.beginPath(); ctx.moveTo(x, y-11); ctx.lineTo(x+9, y-1); ctx.lineTo(x+5, y+9); ctx.lineTo(x-5, y+9); ctx.lineTo(x-9, y-1); ctx.closePath(); ctx.fill();
+      } else if (it.name === "Cigarettes") {
+        ctx.fillStyle = '#cc3333'; ctx.fillRect(x-8, y-11, 16, 20);
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(x-6, y-9, 12, 5);
+      }
     }
 
     function draw() {
       ctx.fillStyle = '#000';
       ctx.fillRect(0,0,canvas.width,canvas.height);
+
       for (let y=0; y<13; y++) {
         for (let x=0; x<19; x++) {
           if (maze[y][x] === 1) {
             ctx.fillStyle = '#0055aa';
-            ctx.fillRect(x*40, y*40, 39, 39);
+            ctx.fillRect(x*TILE, y*TILE, TILE-1, TILE-1);
           } else if (maze[y][x] === 2) {
+            // EXIT in the bottom border
             ctx.fillStyle = '#00cc00';
-            ctx.fillRect(x*40+6, y*40+6, 28, 28);
+            ctx.fillRect(x*TILE+2, y*TILE+2, TILE-4, TILE-4);
             ctx.fillStyle = '#000';
-            ctx.font = '9px Press Start 2P';
-            ctx.fillText('EXIT', x*40+5, y*40+24);
+            ctx.font = '7px Press Start 2P';
+            ctx.fillText('EXIT', x*TILE+2, y*TILE+20);
+          } else if (maze[y][x] === 3) {
+            // ENTRANCE in the bottom border
+            ctx.fillStyle = '#00aaff';
+            ctx.fillRect(x*TILE+2, y*TILE+2, TILE-4, TILE-4);
+            ctx.fillStyle = '#000';
+            ctx.font = '6px Press Start 2P';
+            ctx.fillText('IN', x*TILE+6, y*TILE+20);
           }
         }
       }
@@ -619,21 +785,15 @@
 
       if (currentLevel >= 4) {
         document.getElementById('final-value').textContent = currentProfile.totalValue;
-        showMessage(`LEVEL 5 COMPLETE!<br>YOU BEAT THE GAME!`, () => {
-          showScreen('credits');
-        });
+        showMessage(`LEVEL 5 COMPLETE!<br>YOU BEAT THE GAME!`, () => showScreen('credits'));
       } else {
-        showMessage(`LEVEL ${currentLevel+1} COMPLETE!<br>Escaped with $${totalValue}`, () => {
-          loadLevel(currentLevel + 1);
-        });
+        showMessage(`LEVEL ${currentLevel+1} COMPLETE!<br>Escaped with $${totalValue}`, () => loadLevel(currentLevel + 1));
       }
     }
 
     function loseLevel() {
       gameRunning = false;
-      showMessage(`CAUGHT BY SECURITY!<br>YOU GO TO JAIL`, () => {
-        showScreen('profiles');
-      });
+      showMessage(`CAUGHT BY SECURITY!<br>YOU GO TO JAIL`, () => showScreen('profiles'));
     }
 
     window.addEventListener('keydown', e => {
@@ -641,6 +801,23 @@
       if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
     });
     window.addEventListener('keyup', e => keys[e.key] = false);
+
+    function bindDpad(id, keyName) {
+      const btn = document.getElementById(id);
+      const start = (e) => { e.preventDefault(); keys[keyName] = true; btn.classList.add('pressed'); };
+      const end = (e) => { e.preventDefault(); keys[keyName] = false; btn.classList.remove('pressed'); };
+      btn.addEventListener('touchstart', start, {passive: false});
+      btn.addEventListener('touchend', end, {passive: false});
+      btn.addEventListener('touchcancel', end, {passive: false});
+      btn.addEventListener('mousedown', start);
+      btn.addEventListener('mouseup', end);
+      btn.addEventListener('mouseleave', end);
+    }
+
+    bindDpad('btn-up', 'ArrowUp');
+    bindDpad('btn-down', 'ArrowDown');
+    bindDpad('btn-left', 'ArrowLeft');
+    bindDpad('btn-right', 'ArrowRight');
 
     init();
   </script>
