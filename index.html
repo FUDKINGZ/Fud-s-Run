@@ -6,7 +6,7 @@
   <title>FUD'S RUN</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
     body {
       background: #000;
       color: #fff;
@@ -190,7 +190,7 @@
 
     #dpad {
       flex-shrink: 0;
-      height: 128px;
+      height: 179px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -198,10 +198,10 @@
       border-top: 2px solid #333;
       padding-bottom: env(safe-area-inset-bottom);
     }
-    #dpad-inner { position: relative; width: 120px; height: 120px; }
+    #dpad-inner { position: relative; width: 168px; height: 168px; }
     .dpad-btn {
       position: absolute;
-      width: 42px; height: 42px;
+      width: 59px; height: 59px;
       background: #1a1a1a;
       border: none;
       border-radius: 6px;
@@ -209,26 +209,40 @@
       align-items: center;
       justify-content: center;
       user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
       touch-action: none;
       -webkit-tap-highlight-color: transparent;
-      color: #ccc;
-      font-size: 20px;
-      line-height: 1;
     }
-    .dpad-btn:active, .dpad-btn.pressed { background: #ffcc00; color: #000; box-shadow: 0 0 10px #ff0; }
-    #btn-up    { top: 0;    left: 39px; }
-    #btn-down  { bottom: 0; left: 39px; }
-    #btn-left  { top: 39px; left: 0; }
-    #btn-right { top: 39px; right: 0; }
+    .dpad-btn::before {
+      content: '';
+      display: block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+    }
+    #btn-up::before    { border-width: 0 11px 17px 11px; border-color: transparent transparent #ccc transparent; }
+    #btn-down::before  { border-width: 17px 11px 0 11px; border-color: #ccc transparent transparent transparent; }
+    #btn-left::before  { border-width: 11px 17px 11px 0; border-color: transparent #ccc transparent transparent; }
+    #btn-right::before { border-width: 11px 0 11px 17px; border-color: transparent transparent transparent #ccc; }
+    .dpad-btn:active, .dpad-btn.pressed { background: #ffcc00; }
+    .dpad-btn:active::before, .dpad-btn.pressed::before { border-color: transparent transparent #000 transparent; }
+    #btn-down:active::before, #btn-down.pressed::before { border-color: #000 transparent transparent transparent; }
+    #btn-left:active::before, #btn-left.pressed::before { border-color: transparent #000 transparent transparent; }
+    #btn-right:active::before, #btn-right.pressed::before { border-color: transparent transparent transparent #000; }
+    #btn-up    { top: 0;    left: 54.5px; }
+    #btn-down  { bottom: 0; left: 54.5px; }
+    #btn-left  { top: 54.5px; left: 0; }
+    #btn-right { top: 54.5px; right: 0; }
 
     @media (max-width: 500px) {
       #game-ui { height: 40px; font-size: 8px; }
       #risk-bar { width: 56px; }
-      #dpad { height: 116px; }
-      #dpad-inner { width: 110px; height: 110px; }
-      .dpad-btn { width: 38px; height: 38px; font-size: 18px; }
-      #btn-up, #btn-down { left: 36px; }
-      #btn-left, #btn-right { top: 36px; }
+      #dpad { height: 162px; }
+      #dpad-inner { width: 154px; height: 154px; }
+      .dpad-btn { width: 53px; height: 53px; }
+      #btn-up, #btn-down { left: 50.5px; }
+      #btn-left, #btn-right { top: 50.5px; }
     }
   </style>
 </head>
@@ -281,10 +295,10 @@
       </div>
       <div id="dpad">
         <div id="dpad-inner">
-          <div class="dpad-btn" id="btn-up">▲</div>
-          <div class="dpad-btn" id="btn-down">▼</div>
-          <div class="dpad-btn" id="btn-left">◀</div>
-          <div class="dpad-btn" id="btn-right">▶</div>
+          <div class="dpad-btn" id="btn-up"></div>
+          <div class="dpad-btn" id="btn-down"></div>
+          <div class="dpad-btn" id="btn-left"></div>
+          <div class="dpad-btn" id="btn-right"></div>
         </div>
       </div>
       <div id="message-box">
@@ -460,8 +474,7 @@
         [1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
-        
+        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1]
       ],
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -475,8 +488,7 @@
         [1,0,1,1,1,0,1,1,0,1,0,1,1,0,1,1,1,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
-        
+        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1]
       ],
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -490,8 +502,7 @@
         [1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
-        
+        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1]
       ],
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -505,8 +516,7 @@
         [1,0,1,1,0,1,1,0,1,1,1,0,1,1,0,1,1,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
-        
+        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1]
       ],
       [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -520,8 +530,7 @@
         [1,0,1,1,0,1,0,1,1,1,1,1,0,1,0,1,1,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1],
-        
+        [1,1,1,1,1,1,1,1,1,3,2,1,1,1,1,1,1,1,1]
       ]
     ];
 
@@ -534,6 +543,7 @@
       {name:"Dog Food", value:12},
       {name:"Toys", value:15},
       {name:"Headphones", value:40},
+      {name:"iPhone", value:120},
       {name:"Jewelry", value:80},
       {name:"Cigarettes", value:10}
     ];
@@ -610,7 +620,6 @@
       return true;
     }
 
-    // Original line-of-sight rule: same row OR same column
     function isOnSameAisle(g, p) {
       return Math.floor(g.x / TILE) === Math.floor(p.x / TILE) ||
              Math.floor(g.y / TILE) === Math.floor(p.y / TILE);
@@ -633,9 +642,6 @@
       if (dx && canMove(fud.x+dx, fud.y)) fud.x += dx;
       if (dy && canMove(fud.x, fud.y+dy)) fud.y += dy;
 
-      // ORIGINAL SECURITY RULE:
-      // Guards only become alerted if they are on the same row or column
-      // at the exact moment Fud picks up an item.
       items = items.filter(it => {
         if (Math.hypot(it.x - fud.x, it.y - fud.y) < 11) {
           inventory.push(it);
@@ -672,8 +678,9 @@
             const nx = g.x + d[0]*6, ny = g.y + d[1]*6;
             if (canMove(nx,ny)) { g.x = nx; g.y = ny; }
           }
+          // Roaming guards do not catch Fud, even with stolen items
         } else {
-          // chase mode – only entered if they saw the theft
+          // Chase mode only after spotting a theft on same row/column
           if (g.timer > 8) {
             g.timer = 0;
             let nx = g.x, ny = g.y;
@@ -744,6 +751,15 @@
         ctx.strokeStyle = '#555'; ctx.lineWidth = 3;
         ctx.beginPath(); ctx.arc(x, y, 10, Math.PI*1.1, Math.PI*1.9); ctx.stroke();
         ctx.fillStyle = '#333'; ctx.fillRect(x-13, y-4, 5, 10); ctx.fillRect(x+8, y-4, 5, 10);
+      } else if (it.name === "iPhone") {
+        ctx.fillStyle = '#222';
+        ctx.fillRect(x-7, y-12, 14, 22);
+        ctx.fillStyle = '#111';
+        ctx.fillRect(x-5, y-10, 10, 16);
+        ctx.fillStyle = '#4af';
+        ctx.fillRect(x-4, y-9, 8, 12);
+        ctx.fillStyle = '#333';
+        ctx.fillRect(x-2, y+6, 4, 2);
       } else if (it.name === "Jewelry") {
         ctx.fillStyle = '#ffd700';
         ctx.beginPath(); ctx.moveTo(x, y-10); ctx.lineTo(x+8, y); ctx.lineTo(x+4, y+8); ctx.lineTo(x-4, y+8); ctx.lineTo(x-8, y); ctx.closePath(); ctx.fill();
@@ -762,7 +778,14 @@
         for (let x=0; x<19; x++) {
           if (maze[y][x] === 1) {
             ctx.fillStyle = '#0055aa';
-            ctx.fillRect(x*TILE, y*TILE, TILE-1, TILE-1);
+            const isBorder = (y === 0 || y === 11 || x === 0 || x === 18);
+            if (isBorder) {
+              // solid full-size border walls
+              ctx.fillRect(x*TILE, y*TILE, TILE, TILE);
+            } else {
+              // internal aisle walls stay slightly inset
+              ctx.fillRect(x*TILE + 1, y*TILE + 1, TILE-2, TILE-2);
+            }
           } else if (maze[y][x] === 2) {
             ctx.fillStyle = '#00cc00';
             ctx.fillRect(x*TILE+1, y*TILE+1, TILE-2, TILE-2);
